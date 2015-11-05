@@ -2,14 +2,14 @@ package com.vimo.trainer;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
-import android.support.v7.widget.CardView;
 import android.util.AttributeSet;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 
 /**
  * Created by jeffliu on 11/4/15.
  */
-public class WorkoutCardView extends CardView {
+public class WorkoutCardView extends FrameLayout {
     private TextView title;
     private TextView description;
     private SquareImageView icon;

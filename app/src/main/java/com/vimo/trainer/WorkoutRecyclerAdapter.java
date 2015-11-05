@@ -11,6 +11,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.vimo.trainer.Banner.BannerPageAdapter;
+import com.vimo.trainer.WorkoutDetail.ViewModel;
+import com.vimo.trainer.WorkoutDetail.WorkoutDetailActivity;
 
 import java.util.List;
 
@@ -93,10 +95,17 @@ public class WorkoutRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
                 break;
             case TYPE_GROUP:
-                GroupViewHolder groupViewHolder = (GroupViewHolder) viewHolder;
+                final GroupViewHolder groupViewHolder = (GroupViewHolder) viewHolder;
                 groupViewHolder.mCard0.setTitle("group 0");
                 groupViewHolder.mCard0.setDescription("de 0");
                 groupViewHolder.mCard0.setImage(ResourcesCompat.getDrawable(mContext.getResources(), android.R.drawable.alert_dark_frame, mContext.getTheme()));
+                groupViewHolder.mCard0.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        ViewModel viewModel = new ViewModel("123",android.R.drawable.alert_dark_frame);
+                        WorkoutDetailActivity.navigate((AppCompatActivity)mContext, v.findViewById(R.id.image), viewModel);
+                    }
+                });
 
                 groupViewHolder.mCard1.setTitle("group 1");
                 groupViewHolder.mCard1.setDescription("de 1");

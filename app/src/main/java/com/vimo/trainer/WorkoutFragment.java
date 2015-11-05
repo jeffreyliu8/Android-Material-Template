@@ -1,8 +1,8 @@
 package com.vimo.trainer;
 
 import android.app.Activity;
-import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -32,6 +32,10 @@ public class WorkoutFragment extends Fragment {
     private String mParam2;
 
     private OnFragmentInteractionListener mListener;
+    private static final String KEY_LAYOUT_MANAGER = "layoutManager";
+
+
+    private RecyclerView mRecyclerView;
 
     /**
      * Use this factory method to create a new instance of
@@ -90,15 +94,28 @@ public class WorkoutFragment extends Fragment {
         myList.add(c2);
         myList.add(c3);
 
-        RecyclerView recyclerViewecycler = (RecyclerView) v.findViewById(R.id.detailRecyclerView);
-        recyclerViewecycler.setHasFixedSize(true);
+        mRecyclerView = (RecyclerView) v.findViewById(R.id.detailRecyclerView);
+        mRecyclerView.setHasFixedSize(false);//not every row has save size
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
-        recyclerViewecycler.setLayoutManager(layoutManager);
+        mRecyclerView.setLayoutManager(layoutManager);
 
         WorkoutRecyclerAdapter adapter = new WorkoutRecyclerAdapter(myList, getActivity());
-        recyclerViewecycler.setAdapter(adapter);
+        mRecyclerView.setAdapter(adapter);
 
+        if (savedInstanceState != null) {
+            // Restore saved layout manager type.
+            int position = savedInstanceState.getInt(KEY_LAYOUT_MANAGER, 0);
+            layoutManager.scrollToPosition(position);
+        }
         return v;
+    }
+
+
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        savedInstanceState.putInt(KEY_LAYOUT_MANAGER, ((LinearLayoutManager) mRecyclerView.getLayoutManager())
+                .findFirstVisibleItemPosition());
+        super.onSaveInstanceState(savedInstanceState);
     }
 
     // TODO: Rename method, update argument and hook method into UI event

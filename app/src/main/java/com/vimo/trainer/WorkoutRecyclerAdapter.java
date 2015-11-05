@@ -96,31 +96,56 @@ public class WorkoutRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                 break;
             case TYPE_GROUP:
                 final GroupViewHolder groupViewHolder = (GroupViewHolder) viewHolder;
+                final int image0 = android.R.drawable.ic_delete;
                 groupViewHolder.mCard0.setTitle("group 0");
                 groupViewHolder.mCard0.setDescription("de 0");
-                groupViewHolder.mCard0.setImage(ResourcesCompat.getDrawable(mContext.getResources(), android.R.drawable.alert_dark_frame, mContext.getTheme()));
+                groupViewHolder.mCard0.setImage(ResourcesCompat.getDrawable(mContext.getResources(), image0, mContext.getTheme()));
                 groupViewHolder.mCard0.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        ViewModel viewModel = new ViewModel("123",android.R.drawable.alert_dark_frame);
-                        WorkoutDetailActivity.navigate((AppCompatActivity)mContext, v.findViewById(R.id.image), viewModel);
+                        ViewModel viewModel = new ViewModel("123", image0);
+                        WorkoutDetailActivity.navigate((AppCompatActivity) mContext, v.findViewById(R.id.image), viewModel);
                     }
                 });
 
+                final int image1 = android.R.drawable.checkbox_off_background;
                 groupViewHolder.mCard1.setTitle("group 1");
                 groupViewHolder.mCard1.setDescription("de 1");
-                groupViewHolder.mCard1.setImage(ResourcesCompat.getDrawable(mContext.getResources(), android.R.drawable.checkbox_off_background, mContext.getTheme()));
+                groupViewHolder.mCard1.setImage(ResourcesCompat.getDrawable(mContext.getResources(), image1, mContext.getTheme()));
+                groupViewHolder.mCard1.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        ViewModel viewModel = new ViewModel("456", image1);
+                        WorkoutDetailActivity.navigate((AppCompatActivity) mContext, v.findViewById(R.id.image), viewModel);
+                    }
+                });
 
 
                 if (groupViewHolder.mCard2 != null) {
+                    final int image2 = android.R.drawable.bottom_bar;
                     groupViewHolder.mCard2.setTitle("group 2");
                     groupViewHolder.mCard2.setDescription("de 2");
-                    groupViewHolder.mCard2.setImage(ResourcesCompat.getDrawable(mContext.getResources(), android.R.drawable.bottom_bar, mContext.getTheme()));
+                    groupViewHolder.mCard2.setImage(ResourcesCompat.getDrawable(mContext.getResources(), image2, mContext.getTheme()));
+                    groupViewHolder.mCard2.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            ViewModel viewModel = new ViewModel("456", image2);
+                            WorkoutDetailActivity.navigate((AppCompatActivity) mContext, v.findViewById(R.id.image), viewModel);
+                        }
+                    });
                 }
                 if (groupViewHolder.mCard3 != null) {
+                    final int image3 = android.R.drawable.ic_menu_sort_alphabetically;
                     groupViewHolder.mCard3.setTitle("group 3");
                     groupViewHolder.mCard3.setDescription("de 3");
-                    groupViewHolder.mCard3.setImage(ResourcesCompat.getDrawable(mContext.getResources(), android.R.drawable.ic_menu_sort_alphabetically, mContext.getTheme()));
+                    groupViewHolder.mCard3.setImage(ResourcesCompat.getDrawable(mContext.getResources(), image3, mContext.getTheme()));
+                    groupViewHolder.mCard3.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            ViewModel viewModel = new ViewModel("456", image3);
+                            WorkoutDetailActivity.navigate((AppCompatActivity) mContext, v.findViewById(R.id.image), viewModel);
+                        }
+                    });
                 }
                 break;
         }

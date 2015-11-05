@@ -49,10 +49,10 @@ public class MainActivity extends AppCompatActivity
 
         if (null == savedInstanceState) {
             mNavItemId = R.id.nav_camara;
+            onNavigationItemSelected(navigationView.getMenu().findItem(mNavItemId));
         } else {
             mNavItemId = savedInstanceState.getInt(NAV_ITEM_ID);
         }
-        onNavigationItemSelected(navigationView.getMenu().findItem(mNavItemId));
     }
 
     @Override

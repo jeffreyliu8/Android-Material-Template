@@ -1,6 +1,9 @@
 package com.vimo.trainer.WorkoutDetail;
 
 import android.content.Intent;
+import android.content.res.ColorStateList;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -8,9 +11,11 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.ActivityOptionsCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.graphics.Palette;
 import android.support.v7.widget.Toolbar;
 import android.transition.Slide;
 import android.view.Menu;
@@ -23,6 +28,8 @@ import com.vimo.trainer.SquareImageView;
 public class WorkoutDetailActivity extends AppCompatActivity {
     private static final String EXTRA_IMAGE = "com.antonioleiva.materializeyourapp.extraImage";
     private static final String EXTRA_TITLE = "com.antonioleiva.materializeyourapp.extraTitle";
+
+    private CollapsingToolbarLayout collapsingToolbarLayout;
 
     public static void navigate(AppCompatActivity activity, View transitionImage, ViewModel viewModel) {
         Intent intent = new Intent(activity, WorkoutDetailActivity.class);
@@ -39,8 +46,9 @@ public class WorkoutDetailActivity extends AppCompatActivity {
         initActivityTransitions();
         setContentView(R.layout.activity_workout_detail);
 
-        ViewCompat.setTransitionName(findViewById(R.id.image), EXTRA_IMAGE);// jeff problem
-        //supportPostponeEnterTransition();
+        View topBackgroundImageView = findViewById(R.id.image);
+        ViewCompat.setTransitionName(topBackgroundImageView, EXTRA_IMAGE);
+        supportPostponeEnterTransition();
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -57,15 +65,19 @@ public class WorkoutDetailActivity extends AppCompatActivity {
         });
 
         String itemTitle = getIntent().getStringExtra(EXTRA_TITLE);
-        CollapsingToolbarLayout collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.toolbar_layout);
+        collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.toolbar_layout);
         collapsingToolbarLayout.setTitle(itemTitle);
-        collapsingToolbarLayout.setExpandedTitleColor(getResources().getColor(android.R.color.transparent));
-        collapsingToolbarLayout.setContentScrimColor(getColor(android.R.color.holo_blue_dark));
-        collapsingToolbarLayout.setStatusBarScrimColor(getColor(android.R.color.darker_gray));
+        collapsingToolbarLayout.setExpandedTitleColor(ContextCompat.getColor(getApplicationContext(), android.R.color.transparent));
 
         SquareImageView squareImageView = (SquareImageView) findViewById(R.id.image);
-        squareImageView.setImageDrawable(ResourcesCompat.getDrawable(getResources(),getIntent().getIntExtra(EXTRA_IMAGE,0),getTheme()));
-        //supportStartPostponedEnterTransition();
+        squareImageView.setImageDrawable(ResourcesCompat.getDrawable(getResources(), getIntent().getIntExtra(EXTRA_IMAGE, 0), getTheme()));
+
+        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), getIntent().getIntExtra(EXTRA_IMAGE, 0));
+        Palette.from(bitmap).generate(new Palette.PaletteAsyncListener() {
+            public void onGenerated(Palette palette) {
+                applyPalette(palette);
+            }
+        });
     }
 
     @Override
@@ -104,20 +116,20 @@ public class WorkoutDetailActivity extends AppCompatActivity {
         }
     }
 
-//    private void applyPalette(Palette palette) {
-//        int primaryDark = getResources().getColor(R.color.colorPrimaryDark);
-//        int primary = getResources().getColor(R.color.colorPrimary);
-//        collapsingToolbarLayout.setContentScrimColor(palette.getMutedColor(primary));
-//        collapsingToolbarLayout.setStatusBarScrimColor(palette.getDarkMutedColor(primaryDark));
-//        updateBackground((FloatingActionButton) findViewById(R.id.fab), palette);
-//        supportStartPostponedEnterTransition();
-//    }
-//
-//    private void updateBackground(FloatingActionButton fab, Palette palette) {
-//        int lightVibrantColor = palette.getLightVibrantColor(getResources().getColor(android.R.color.white));
-//        int vibrantColor = palette.getVibrantColor(getResources().getColor(R.color.colorAccent));
-//
-//        fab.setRippleColor(lightVibrantColor);
-//        fab.setBackgroundTintList(ColorStateList.valueOf(vibrantColor));
-//    }
+    private void applyPalette(Palette palette) {
+        int primaryDark = ContextCompat.getColor(getApplicationContext(), R.color.colorPrimaryDark);
+        int primary = ContextCompat.getColor(getApplicationContext(), R.color.colorPrimary);
+        collapsingToolbarLayout.setContentScrimColor(palette.getMutedColor(primary));
+        collapsingToolbarLayout.setStatusBarScrimColor(palette.getDarkMutedColor(primaryDark));
+        updateBackground((FloatingActionButton) findViewById(R.id.fab), palette);
+        supportStartPostponedEnterTransition();
+    }
+
+    private void updateBackground(FloatingActionButton fab, Palette palette) {
+        int lightVibrantColor = palette.getLightVibrantColor(ContextCompat.getColor(getApplicationContext(), android.R.color.white));
+        int vibrantColor = palette.getVibrantColor(ContextCompat.getColor(getApplicationContext(), R.color.colorAccent));
+
+        fab.setRippleColor(lightVibrantColor);
+        fab.setBackgroundTintList(ColorStateList.valueOf(vibrantColor));
+    }
 }

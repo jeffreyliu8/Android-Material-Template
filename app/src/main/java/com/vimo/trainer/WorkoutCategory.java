@@ -17,4 +17,12 @@ public class WorkoutCategory {
     public boolean addExercise(WorkoutExercise exercise) {
         return exerciseList.add(exercise);
     }
+
+    public WorkoutExercise getList(int position){
+        return exerciseList.get(position);
+    }
+
+    public String getName() {
+        return name;
+    }
 }

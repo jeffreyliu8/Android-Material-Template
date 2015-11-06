@@ -75,24 +75,39 @@ public class WorkoutFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_workout, container, false);
 //
 
-        WorkoutExercise a = new WorkoutExercise();
-        WorkoutExercise b = new WorkoutExercise();
+        WorkoutExercise a = new WorkoutExercise("a", android.R.drawable.ic_delete, "descp a");
+        WorkoutExercise b = new WorkoutExercise("b", android.R.drawable.ic_menu_report_image, "descp b");
+        WorkoutExercise c = new WorkoutExercise("c", android.R.drawable.ic_search_category_default, "descp c");
+        WorkoutExercise d = new WorkoutExercise("d", android.R.drawable.ic_dialog_alert, "descp d");
+
+        WorkoutExercise e = new WorkoutExercise("e", android.R.drawable.ic_delete, "descp e");
+        WorkoutExercise f = new WorkoutExercise("f", android.R.drawable.ic_menu_report_image, "descp f");
+        WorkoutExercise g = new WorkoutExercise("g", android.R.drawable.ic_search_category_default, "descp g");
+        WorkoutExercise h = new WorkoutExercise("h", android.R.drawable.ic_dialog_alert, "descp h");
+
+
         WorkoutCategory c1 = new WorkoutCategory("first");
         WorkoutCategory c2 = new WorkoutCategory("second");
         WorkoutCategory c3 = new WorkoutCategory("third");
         c1.addExercise(a);
         c1.addExercise(b);
-        c2.addExercise(a);
-        c2.addExercise(b);
+        c1.addExercise(c);
+        c1.addExercise(d);
+        c2.addExercise(e);
+        c2.addExercise(f);
+        c2.addExercise(g);
+        c2.addExercise(h);
         c3.addExercise(a);
         c3.addExercise(b);
+        c3.addExercise(c);
+        c3.addExercise(d);
         List<WorkoutCategory> myList = new ArrayList<WorkoutCategory>();
         myList.add(c1);
         myList.add(c2);
         myList.add(c3);
-        myList.add(c1);
-        myList.add(c2);
-        myList.add(c3);
+//        myList.add(c1);
+//        myList.add(c2);
+//        myList.add(c3);
 
         mRecyclerView = (RecyclerView) v.findViewById(R.id.detailRecyclerView);
         mRecyclerView.setHasFixedSize(false);//not every row has save size

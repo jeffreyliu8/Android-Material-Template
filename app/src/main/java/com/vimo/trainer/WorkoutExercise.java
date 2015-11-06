@@ -6,15 +6,23 @@ package com.vimo.trainer;
 public class WorkoutExercise {
     private String name;
     private int imageId;
+    private String description;
 
-    public WorkoutExercise(String name, int imageId) {
+    public WorkoutExercise(String name, int imageId, String description) {
         this.name = name;
         this.imageId = imageId;
-
+        this.description = description;
     }
 
-    public WorkoutExercise() {
-        this.name = "jeff";
-        this.imageId = 0;
+    public String getName() {
+        return name;
+    }
+
+    public int getImageId() {
+        return imageId;
+    }
+
+    public String getDescription() {
+        return description;
     }
 }

@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.vimo.trainer.Banner.BannerItem;
 import com.vimo.trainer.Banner.BannerPageAdapter;
 import com.vimo.trainer.WorkoutDetail.ViewModel;
 import com.vimo.trainer.WorkoutDetail.WorkoutDetailActivity;
@@ -18,15 +19,19 @@ import com.vimo.trainer.WorkoutDetail.WorkoutDetailActivity;
 import java.util.List;
 
 /**
- * Created by jeffliu on 11/3/15.
+ * Created by Jeffrey Liu on 11/3/15.
  */
 public class WorkoutRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-
+    private List<BannerItem> mBannerItems;
     private Context mContext;
     private List<WorkoutCategory> mCategories;
+    private ViewPager mBannerViewPager;
+    private BannerPageAdapter mPageAdapter;
+    private Integer pageNumber = null;
 
-    public WorkoutRecyclerAdapter(List<WorkoutCategory> categories, Context c) {
+    public WorkoutRecyclerAdapter(List<BannerItem> bannerItems, List<WorkoutCategory> categories, Context c) {
         this.mContext = c;
+        this.mBannerItems = bannerItems;
         this.mCategories = categories;
     }
 
@@ -48,15 +53,17 @@ public class WorkoutRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     }
 
     private class ImageViewHolder extends RecyclerView.ViewHolder {
-        private ViewPager mViewPager;
-        private BannerPageAdapter mPageAdapter;
 
         public ImageViewHolder(View itemView) {
             super(itemView);
-            mViewPager = (android.support.v4.view.ViewPager) itemView.findViewById(R.id.pager);
-            mPageAdapter = new BannerPageAdapter(((AppCompatActivity) mContext).getSupportFragmentManager());
-            mViewPager.setAdapter(mPageAdapter);
+            mBannerViewPager = (android.support.v4.view.ViewPager) itemView.findViewById(R.id.pager);
+            mPageAdapter = new BannerPageAdapter(mBannerItems,((AppCompatActivity) mContext).getSupportFragmentManager());
+            mBannerViewPager.setAdapter(mPageAdapter);
             //mViewPager.setOffscreenPageLimit(3);
+
+            if (pageNumber != null) {
+                mBannerViewPager.setCurrentItem(pageNumber);
+            }
         }
     }
 
@@ -87,11 +94,6 @@ public class WorkoutRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, int position) {
         switch (viewHolder.getItemViewType()) {
             case TYPE_IMAGE:
-                ImageViewHolder imageViewHolder = (ImageViewHolder) viewHolder;
-                imageViewHolder.mPageAdapter.setTabTextImage(0, "page 1", android.R.drawable.ic_delete);
-                imageViewHolder.mPageAdapter.setTabTextImage(1, "page 2", android.R.drawable.ic_dialog_alert);
-                imageViewHolder.mPageAdapter.setTabTextImage(2, "page 3", android.R.drawable.ic_dialog_info);
-
                 break;
             case TYPE_GROUP:
                 final GroupViewHolder groupViewHolder = (GroupViewHolder) viewHolder;
@@ -167,5 +169,13 @@ public class WorkoutRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     @Override
     public int getItemCount() {
         return mCategories.size() + 1;
+    }
+
+    public int getBannerPageNumber() {
+        return mBannerViewPager.getCurrentItem();
+    }
+
+    public void setCurrentPage(int page) {
+        pageNumber = page;
     }
 }

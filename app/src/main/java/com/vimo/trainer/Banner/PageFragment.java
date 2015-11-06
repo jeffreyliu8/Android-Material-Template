@@ -4,7 +4,6 @@ package com.vimo.trainer.Banner;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.res.ResourcesCompat;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,9 +20,29 @@ public class PageFragment extends Fragment {
     private String mTitle;
     private int mDrawable;
 
+    public static final String ARG_NAME = "banner_name";
+    public static final String ARG_IMAGE = "banner_image";
 
     public PageFragment() {
         // Required empty public constructor
+    }
+
+    public static PageFragment newInstance(String param1, int param2) {
+        PageFragment fragment = new PageFragment();
+        Bundle args = new Bundle();
+        args.putString(ARG_NAME, param1);
+        args.putInt(ARG_IMAGE, param2);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (getArguments() != null) {
+            mTitle = getArguments().getString(ARG_NAME);
+            mDrawable = getArguments().getInt(ARG_IMAGE);
+        }
     }
 
     @Override
@@ -36,34 +55,8 @@ public class PageFragment extends Fragment {
         title.setText(mTitle);
 
         ImageView backgroundImage = (ImageView) v.findViewById(R.id.image);
-        Log.d("jeff", "drawable is" + mDrawable);
-        if (mDrawable != 0)
-            backgroundImage.setImageDrawable(ResourcesCompat.getDrawable(getResources(), mDrawable, getActivity().getTheme()));
+        backgroundImage.setImageDrawable(ResourcesCompat.getDrawable(getResources(), mDrawable, getActivity().getTheme()));
 
         return v;
-    }
-
-    public void setTextImage(String title, int drawable) {
-        this.mTitle = title;
-        this.mDrawable = drawable;
-    }
-
-    // for rotation
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-
-        if (savedInstanceState != null) {
-            //Restore the fragment's state here
-            savedInstanceState.getInt("draw");
-        }
-    }
-
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-
-        //Save the fragment's state here
-        outState.putInt("draw", mDrawable);
     }
 }

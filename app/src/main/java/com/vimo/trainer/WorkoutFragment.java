@@ -9,6 +9,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.vimo.trainer.Banner.BannerItem;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,8 +35,9 @@ public class WorkoutFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
     private static final String KEY_LAYOUT_MANAGER = "layoutManager";
+    private static final String KEY_VIEW_PAGER_NUMBER = "page number";
 
-
+    private WorkoutRecyclerAdapter adapter;
     private RecyclerView mRecyclerView;
 
     /**
@@ -105,22 +108,27 @@ public class WorkoutFragment extends Fragment {
         myList.add(c1);
         myList.add(c2);
         myList.add(c3);
-//        myList.add(c1);
-//        myList.add(c2);
-//        myList.add(c3);
+
+        List<BannerItem> bannerItemList = new ArrayList<BannerItem>();
+        bannerItemList.add(new BannerItem("page 1",android.R.drawable.alert_light_frame));
+        bannerItemList.add(new BannerItem("page 2",android.R.drawable.alert_light_frame));
+        bannerItemList.add(new BannerItem("page 3",android.R.drawable.alert_light_frame));
+        bannerItemList.add(new BannerItem("page 4",android.R.drawable.alert_light_frame));
 
         mRecyclerView = (RecyclerView) v.findViewById(R.id.detailRecyclerView);
         mRecyclerView.setHasFixedSize(false);//not every row has save size
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(layoutManager);
 
-        WorkoutRecyclerAdapter adapter = new WorkoutRecyclerAdapter(myList, getActivity());
+        adapter = new WorkoutRecyclerAdapter(bannerItemList,myList, getActivity());
         mRecyclerView.setAdapter(adapter);
 
         if (savedInstanceState != null) {
             // Restore saved layout manager type.
-            int position = savedInstanceState.getInt(KEY_LAYOUT_MANAGER, 0);
-            layoutManager.scrollToPosition(position);
+            layoutManager.scrollToPosition(savedInstanceState.getInt(KEY_LAYOUT_MANAGER, 0));
+
+            // restore page position
+            adapter.setCurrentPage(savedInstanceState.getInt(KEY_VIEW_PAGER_NUMBER, 0));
         }
         return v;
     }
@@ -130,6 +138,7 @@ public class WorkoutFragment extends Fragment {
     public void onSaveInstanceState(Bundle savedInstanceState) {
         savedInstanceState.putInt(KEY_LAYOUT_MANAGER, ((LinearLayoutManager) mRecyclerView.getLayoutManager())
                 .findFirstVisibleItemPosition());
+        savedInstanceState.putInt(KEY_VIEW_PAGER_NUMBER, adapter.getBannerPageNumber());
         super.onSaveInstanceState(savedInstanceState);
     }
 

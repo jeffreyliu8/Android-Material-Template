@@ -37,6 +37,24 @@ public class ExerciseVideoRecyclerAdapter extends RecyclerView.Adapter<ExerciseV
         }
     }
 
+    public static class DetailListHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+        TextView label;
+        TextView dateTime;
+
+        public DetailListHolder(View itemView) {
+            super(itemView);
+            label = (TextView) itemView.findViewById(R.id.textView);
+            dateTime = (TextView) itemView.findViewById(R.id.textView2);
+            Log.i(LOG_TAG, "Adding Listener");
+            itemView.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+            myClickListener.onItemClick(getPosition(), v);
+        }
+    }
+
     public void setOnItemClickListener(MyClickListener myClickListener) {
         this.myClickListener = myClickListener;
     }
@@ -61,15 +79,15 @@ public class ExerciseVideoRecyclerAdapter extends RecyclerView.Adapter<ExerciseV
         holder.dateTime.setText("" + mDataset.get(position).getRestTime());
     }
 
-    public void addItem(ExerciseVideoObject dataObj, int index) {
-        mDataset.add(dataObj);
-        notifyItemInserted(index);
-    }
-
-    public void deleteItem(int index) {
-        mDataset.remove(index);
-        notifyItemRemoved(index);
-    }
+//    public void addItem(ExerciseVideoObject dataObj, int index) {
+//        mDataset.add(dataObj);
+//        notifyItemInserted(index);
+//    }
+//
+//    public void deleteItem(int index) {
+//        mDataset.remove(index);
+//        notifyItemRemoved(index);
+//    }
 
     @Override
     public int getItemCount() {

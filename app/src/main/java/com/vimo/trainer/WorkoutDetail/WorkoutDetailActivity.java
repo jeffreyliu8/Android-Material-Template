@@ -16,29 +16,24 @@ import android.support.v4.content.res.ResourcesCompat;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.graphics.Palette;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.transition.Slide;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
+import com.vimo.trainer.HalfSquareImageView;
 import com.vimo.trainer.R;
-import com.vimo.trainer.SquareImageView;
-
-import java.util.ArrayList;
 
 public class WorkoutDetailActivity extends AppCompatActivity {
     private static final String EXTRA_IMAGE = "com.antonioleiva.materializeyourapp.extraImage";
     private static final String EXTRA_TITLE = "com.antonioleiva.materializeyourapp.extraTitle";
 
     private CollapsingToolbarLayout collapsingToolbarLayout;
-    private RecyclerView mRecyclerView;
-    private ExerciseVideoRecyclerAdapter mAdapter;
-    private RecyclerView.LayoutManager mLayoutManager;
-    private static String LOG_TAG = "RecyclerViewActivity";
 
     public static void navigate(AppCompatActivity activity, View transitionImage, ViewModel viewModel) {
         Intent intent = new Intent(activity, WorkoutDetailActivity.class);
@@ -78,8 +73,8 @@ public class WorkoutDetailActivity extends AppCompatActivity {
         collapsingToolbarLayout.setTitle(itemTitle);
         collapsingToolbarLayout.setExpandedTitleColor(ContextCompat.getColor(getApplicationContext(), android.R.color.transparent));
 
-        SquareImageView squareImageView = (SquareImageView) findViewById(R.id.image);
-        squareImageView.setImageDrawable(ResourcesCompat.getDrawable(getResources(), getIntent().getIntExtra(EXTRA_IMAGE, 0), getTheme()));
+        HalfSquareImageView halfSquareImageView = (HalfSquareImageView) findViewById(R.id.image);
+        halfSquareImageView.setImageDrawable(ResourcesCompat.getDrawable(getResources(), getIntent().getIntExtra(EXTRA_IMAGE, 0), getTheme()));
 
         Bitmap bitmap = BitmapFactory.decodeResource(getResources(), getIntent().getIntExtra(EXTRA_IMAGE, 0));
         Palette.from(bitmap).generate(new Palette.PaletteAsyncListener() {
@@ -88,12 +83,31 @@ public class WorkoutDetailActivity extends AppCompatActivity {
             }
         });
 
-        mRecyclerView = (RecyclerView) findViewById(R.id.recyclerView);
-        mRecyclerView.setHasFixedSize(true);
-        mLayoutManager = new LinearLayoutManager(this);
-        mRecyclerView.setLayoutManager(mLayoutManager);
-        mAdapter = new ExerciseVideoRecyclerAdapter(getDataSet());
-        mRecyclerView.setAdapter(mAdapter);
+        // access your linear layout
+        LinearLayout layout = (LinearLayout) findViewById(R.id.card_list);
+        // load the xml structure of your row
+
+        for (int index = 0; index < 20; index++) {
+            View child = getLayoutInflater().inflate(R.layout.exercise_video_list_item, null);
+            // now fill the row as you would do with listview
+            TextView exerciseName = (TextView) child.findViewById(R.id.exerciseName);
+            exerciseName.setText("en" + index);
+            TextView exerciseTime = (TextView) child.findViewById(R.id.exerciseTime);
+            exerciseTime.setText("et" + index);
+            TextView restTime = (TextView) child.findViewById(R.id.restTime);
+            restTime.setText("er" + index);
+
+            RelativeLayout clickPreviewArea = (RelativeLayout) child.findViewById(R.id.preview_click_area);
+            clickPreviewArea.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Log.d("jeff", "you clicked " + ((TextView) v.findViewById(R.id.exerciseName)).getText());
+                }
+            });
+
+            // and than add it
+            layout.addView(child);
+        }
     }
 
     @Override
@@ -147,25 +161,5 @@ public class WorkoutDetailActivity extends AppCompatActivity {
 
         fab.setRippleColor(lightVibrantColor);
         fab.setBackgroundTintList(ColorStateList.valueOf(vibrantColor));
-    }
-
-    private ArrayList<ExerciseVideoObject> getDataSet() {
-        ArrayList results = new ArrayList<ExerciseVideoObject>();
-        for (int index = 0; index < 20; index++) {
-            ExerciseVideoObject obj = new ExerciseVideoObject("Some Primary Text " + index, index);
-            results.add(index, obj);
-        }
-        return results;
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        mAdapter.setOnItemClickListener(new ExerciseVideoRecyclerAdapter.MyClickListener() {
-            @Override
-            public void onItemClick(int position, View v) {
-                Log.i(LOG_TAG, " Clicked on Item " + position);
-            }
-        });
     }
 }

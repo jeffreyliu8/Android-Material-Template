@@ -12,7 +12,7 @@ import android.widget.TextView;
 public class WorkoutCardView extends FrameLayout {
     private TextView title;
     private TextView description;
-    private SquareImageView icon;
+    private HalfSquareImageView icon;
 
     public WorkoutCardView(Context context) {
         super(context);
@@ -33,7 +33,7 @@ public class WorkoutCardView extends FrameLayout {
         inflate(getContext(), R.layout.card, this);
         this.title = (TextView) findViewById(R.id.title);
         this.description = (TextView) findViewById(R.id.description);
-        this.icon = (SquareImageView) findViewById(R.id.image);
+        this.icon = (HalfSquareImageView) findViewById(R.id.image);
     }
 
     public void setTitle(String title) {

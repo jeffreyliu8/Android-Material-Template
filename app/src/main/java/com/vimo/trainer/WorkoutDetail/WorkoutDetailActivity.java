@@ -16,8 +16,11 @@ import android.support.v4.content.res.ResourcesCompat;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.graphics.Palette;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.transition.Slide;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -25,11 +28,17 @@ import android.view.View;
 import com.vimo.trainer.R;
 import com.vimo.trainer.SquareImageView;
 
+import java.util.ArrayList;
+
 public class WorkoutDetailActivity extends AppCompatActivity {
     private static final String EXTRA_IMAGE = "com.antonioleiva.materializeyourapp.extraImage";
     private static final String EXTRA_TITLE = "com.antonioleiva.materializeyourapp.extraTitle";
 
     private CollapsingToolbarLayout collapsingToolbarLayout;
+    private RecyclerView mRecyclerView;
+    private ExerciseVideoRecyclerAdapter mAdapter;
+    private RecyclerView.LayoutManager mLayoutManager;
+    private static String LOG_TAG = "RecyclerViewActivity";
 
     public static void navigate(AppCompatActivity activity, View transitionImage, ViewModel viewModel) {
         Intent intent = new Intent(activity, WorkoutDetailActivity.class);
@@ -78,6 +87,13 @@ public class WorkoutDetailActivity extends AppCompatActivity {
                 applyPalette(palette);
             }
         });
+
+        mRecyclerView = (RecyclerView) findViewById(R.id.recyclerView);
+        mRecyclerView.setHasFixedSize(true);
+        mLayoutManager = new LinearLayoutManager(this);
+        mRecyclerView.setLayoutManager(mLayoutManager);
+        mAdapter = new ExerciseVideoRecyclerAdapter(getDataSet());
+        mRecyclerView.setAdapter(mAdapter);
     }
 
     @Override
@@ -131,5 +147,25 @@ public class WorkoutDetailActivity extends AppCompatActivity {
 
         fab.setRippleColor(lightVibrantColor);
         fab.setBackgroundTintList(ColorStateList.valueOf(vibrantColor));
+    }
+
+    private ArrayList<ExerciseVideoObject> getDataSet() {
+        ArrayList results = new ArrayList<ExerciseVideoObject>();
+        for (int index = 0; index < 20; index++) {
+            ExerciseVideoObject obj = new ExerciseVideoObject("Some Primary Text " + index, index);
+            results.add(index, obj);
+        }
+        return results;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mAdapter.setOnItemClickListener(new ExerciseVideoRecyclerAdapter.MyClickListener() {
+            @Override
+            public void onItemClick(int position, View v) {
+                Log.i(LOG_TAG, " Clicked on Item " + position);
+            }
+        });
     }
 }

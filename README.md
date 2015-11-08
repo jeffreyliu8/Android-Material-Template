@@ -1,9 +1,13 @@
 # Android-Material-Template
 Android template with Material design for everyone.
 
+<a href="https://play.google.com/store/apps/details?id=com.jeffliu.androidmaterialtemplate">
+  <img alt="Get it on Google Play"
+       src="https://developer.android.com/images/brand/en_generic_rgb_wo_45.png" />
+</a>
+
 ![Output sample](https://github.com/jeffreyliu8/Android-Material-Template/blob/master/preview.gif)
 
-[Download in playstore](https://play.google.com/store/apps/details?id=com.jeffliu.androidmaterialtemplate)
 
 The MIT License (MIT)
 Copyright © 2015 Jeffrey Liu

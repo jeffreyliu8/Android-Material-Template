@@ -8,6 +8,10 @@ Android template with Material design for everyone.
 
 ![Output sample](https://github.com/jeffreyliu8/Android-Material-Template/blob/master/preview.gif)
 
+Here is what you can do with this template
+
+![Output sample](https://github.com/jeffreyliu8/Android-Material-Template/blob/master/preview2.gif)
+
 
 The MIT License (MIT)
 Copyright © 2015 Jeffrey Liu
